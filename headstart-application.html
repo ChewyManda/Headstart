@@ -302,7 +302,7 @@ footer p  { margin: 0; line-height: 1.6; }
 
         <!-- === STEP 3 === -->
         <div class="form-step" data-step="3">
-          <h3 style="text-align:center;margin-bottom:1.5rem;">Background Information</h3>
+          <h3 style="text-align:center;margin-bottom:1.5rem;">Background Information & Documents</h3>
 
           <div class="step3-grid">
             <div class="field-group">
@@ -386,6 +386,28 @@ footer p  { margin: 0; line-height: 1.6; }
               <div class="error-message">Please select father's employment status</div>
             </div>
           </div>
+
+          <!-- NEW: File Uploads Section -->
+          <h3 style="text-align:center;margin-top:2rem;margin-bottom:1.5rem;">Required Documents</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="diplomaFile">Upload Diploma/Transcript of Records *</label>
+              <input type="file" id="diplomaFile" name="file_diploma" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+              <div class="error-message">Please upload your diploma/transcript</div>
+            </div>
+            <div class="form-group">
+              <label for="idFile">Upload Valid ID (Front & Back) *</label>
+              <input type="file" id="idFile" name="file_id" accept=".pdf,.jpg,.jpeg,.png" required>
+              <div class="error-message">Please upload your valid ID</div>
+            </div>
+            <div class="form-group">
+              <label for="psaFile">Upload PSA Birth Certificate *</label>
+              <input type="file" id="psaFile" name="file_psa" accept=".pdf,.jpg,.jpeg,.png" required>
+              <div class="error-message">Please upload your PSA birth certificate</div>
+            </div>
+          </div>
+          <!-- END NEW: File Uploads Section -->
+
         </div>
 
         <!-- === STEP 4 (review) === -->
@@ -420,7 +442,7 @@ footer p  { margin: 0; line-height: 1.6; }
 
         <!-- === Navigation buttons === -->
         <div class="form-navigation">
-          <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()" disabled>
+          <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()">
             <i class="fas fa-arrow-left"></i> Previous
           </button>
           <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
@@ -437,7 +459,7 @@ footer p  { margin: 0; line-height: 1.6; }
   </main>
 
   <!-- ===== Footer ===== -->
- <!-- ==============  FOOTER  ============== -->
+  <!-- ==============  FOOTER  ============== -->
   <footer>
     <div class="footer-container">
       <div class="column">
@@ -464,15 +486,18 @@ footer p  { margin: 0; line-height: 1.6; }
 
   <!-- ===== JavaScript (stepper logic) ===== -->
   <script>
-    const form            = document.getElementById('applicationForm');
-    const steps           = Array.from(document.querySelectorAll('.form-step[data-step]'));
-    const stepIndicators  = Array.from(document.querySelectorAll('.stepper .step'));
-    const progressBar     = document.getElementById('stepProgress');
-    const prevBtn         = document.getElementById('prevBtn');
-    const nextBtn         = document.getElementById('nextBtn');
-    const submitBtn       = document.getElementById('submitBtn');
-    let currentStep       = 1; // Changed to 1-based to match data-step values
-    const totalSteps      = 4; // We have 4 actual steps
+    const form = document.getElementById('applicationForm');
+    const steps = Array.from(document.querySelectorAll('.form-step[data-step]'));
+    const stepIndicators = Array.from(document.querySelectorAll('.stepper .step'));
+    const progressBar = document.getElementById('stepProgress');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    let currentStep = 1; // Changed to 1-based to match data-step values
+    const totalSteps = 4; // We have 4 actual steps
+
+    // IMPORTANT: Replace with your deployed Google Apps Script Web App URL
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwhx32GFdKGLt6PM7DO6JAjOq7R-Q32GCczhHomEM52fAK0TBhsTJ0cZhkRguT8ZeEXMw/exec'; 
 
     // ===== Helper functions =====
     function updateUI() {
@@ -502,22 +527,22 @@ footer p  { margin: 0; line-height: 1.6; }
     function validateCurrentStep() {
       const currentStepElement = document.querySelector(`.form-step[data-step="${currentStep}"]`);
       const requiredFields = currentStepElement.querySelectorAll('input[required], select[required]');
-      
+
       let isValid = true;
-      
+
       // Clear all previous error states
       currentStepElement.querySelectorAll('.form-group').forEach(group => {
         group.classList.remove('has-error');
         const errorMsg = group.querySelector('.error-message');
         if (errorMsg) errorMsg.classList.remove('show');
       });
-      
+
       currentStepElement.querySelectorAll('.radio-group').forEach(group => {
         group.classList.remove('has-error');
         const errorMsg = group.parentElement.querySelector('.error-message');
         if (errorMsg) errorMsg.classList.remove('show');
       });
-      
+
       requiredFields.forEach(field => {
         if (field.type === 'radio') {
           // For radio buttons, check if any in the group is selected
@@ -547,6 +572,17 @@ footer p  { margin: 0; line-height: 1.6; }
               if (errorMsg) errorMsg.classList.add('show');
             }
           }
+        } else if (field.type === 'file') {
+          // Special validation for file inputs
+          if (field.files.length === 0) {
+            isValid = false;
+            const formGroup = field.closest('.form-group, .field-group');
+            if (formGroup) {
+              formGroup.classList.add('has-error');
+              const errorMsg = formGroup.querySelector('.error-message');
+              if (errorMsg) errorMsg.classList.add('show');
+            }
+          }
         } else {
           // For other field types (text, number, select, etc.)
           if (!field.value.trim()) {
@@ -560,7 +596,7 @@ footer p  { margin: 0; line-height: 1.6; }
           }
         }
       });
-      
+
       return isValid;
     }
 
@@ -595,18 +631,31 @@ footer p  { margin: 0; line-height: 1.6; }
       const review = document.getElementById('reviewContent');
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
-      
-      // Filter out newsletter and terms from review
-      const filteredEntries = Object.entries(data).filter(([key]) => 
-        key !== 'newsletter' && key !== 'terms'
+
+      // Filter out newsletter, terms, and file inputs from review
+      const filteredEntries = Object.entries(data).filter(([key]) =>
+        key !== 'newsletter' && key !== 'terms' && !key.startsWith('file_')
       );
-      
-      const reviewHTML = filteredEntries.map(([key, value]) => {
+
+      let reviewHTML = filteredEntries.map(([key, value]) => {
         const displayName = toTitle(key);
         const displayValue = value || '-';
         return `<p><strong>${displayName}:</strong> ${displayValue}</p>`;
       }).join('');
-      
+
+      // Add file names to review
+      const fileInputs = form.querySelectorAll('input[type="file"]');
+      fileInputs.forEach(input => {
+        if (input.files.length > 0) {
+          const fileName = input.files[0].name;
+          const displayName = toTitle(input.name.replace('file_', '')); // Remove 'file_' prefix
+          reviewHTML += `<p><strong>${displayName} File:</strong> ${fileName}</p>`;
+        } else {
+          const displayName = toTitle(input.name.replace('file_', ''));
+          reviewHTML += `<p><strong>${displayName} File:</strong> No file uploaded</p>`;
+        }
+      });
+
       review.innerHTML = reviewHTML;
     }
 
@@ -621,52 +670,92 @@ footer p  { margin: 0; line-height: 1.6; }
         .replace(/Number$/, ' Number') // Fix "Number" endings
         .replace(/Code$/, ' Code') // Fix "Code" endings
         .replace(/Of Birth/, ' of Birth') // Fix "Date of Birth"
-        .replace(/Employment Status/, 'Employment Status'); // Keep Employment Status clean
+        .replace(/Employment Status/, 'Employment Status') // Keep Employment Status clean
+        .replace(/Psa/, 'PSA'); // Specific fix for PSA
     }
 
     // Submit handler
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       if (!document.getElementById('terms').checked) {
-        alert('You must agree to the terms and conditions to proceed.');
+        alert('You must agree to the terms and conditions and privacy policy.');
         return;
       }
 
-      // Generate application ID
-      const applicationId = 'APP-' + Math.random().toString(36).substr(2, 8).toUpperCase();
-      document.getElementById('applicationId').textContent = applicationId;
+      // Optional: Show a loading indicator
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      submitBtn.disabled = true;
 
-      // Hide all form steps
-      steps.forEach(step => step.classList.remove('active'));
-      
-      // Show success step
-      document.getElementById('successStep').style.display = 'flex';
+      const formData = new FormData(form);
 
-      // Hide navigation buttons
-      document.querySelector('.form-navigation').style.display = 'none';
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          body: formData // FormData automatically sets Content-Type to multipart/form-data
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Generate application ID
+          const applicationId = 'APP-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+          document.getElementById('applicationId').textContent = applicationId;
+
+          // Hide all form steps
+          steps.forEach(step => step.classList.remove('active'));
+
+          // Show success step
+          document.getElementById('successStep').style.display = 'flex';
+
+          // Hide navigation buttons
+          document.querySelector('.form-navigation').style.display = 'none';
+
+          // Optional: Clear form after successful submission (if not resetting immediately)
+          // form.reset();
+
+        } else {
+          alert('Submission failed: ' + result.message);
+          console.error('Submission error:', result.message);
+        }
+      } catch (error) {
+        alert('An error occurred during submission. Please try again.');
+        console.error('Fetch error:', error);
+      } finally {
+        // Hide loading indicator and re-enable button
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+        submitBtn.disabled = false;
+      }
     });
 
     // Reset for a new submission
     function resetForm() {
       form.reset();
       currentStep = 1;
-      
+
       // Hide success step
       document.getElementById('successStep').style.display = 'none';
-      
+
       // Show navigation buttons
       document.querySelector('.form-navigation').style.display = 'flex';
-      
+
       // Reset all form steps
       steps.forEach(step => {
         step.style.display = '';
         step.classList.remove('active');
       });
-      
+
       // Show first step
       document.querySelector('.form-step[data-step="1"]').classList.add('active');
-      
+
+      // Clear error messages and classes
+      document.querySelectorAll('.form-group.has-error, .radio-group.has-error').forEach(group => {
+        group.classList.remove('has-error');
+        const errorMsg = group.querySelector('.error-message');
+        if (errorMsg) errorMsg.classList.remove('show');
+      });
+
+
       updateUI();
     }
 
@@ -674,4 +763,5 @@ footer p  { margin: 0; line-height: 1.6; }
     updateUI();
   </script>
 </body>
+
 </html>
