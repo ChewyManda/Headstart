@@ -1,0 +1,157 @@
+ body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f2f2f2;
+    }
+
+    header {
+      background-color: #4b4ba3;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #3a3a7c;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+   .hero {
+  background: url('../Assets/bg.jpg') center/cover no-repeat;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* dark overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 40px;
+  max-width: 1000px;
+  padding: 20px;
+  z-index: 2;
+}
+
+.hero-left img {
+  max-width: 180px;
+  border-radius: 50%;
+  height: 180px;
+  width: 180px;
+  
+}
+
+.hero-left{
+    border: 5px solid black; /* white border */
+  background-color: white; /* white background */
+
+}
+.hero-right {
+  max-width: 600px;
+}
+
+.hero-right h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.hero-right p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.section-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section {
+  background-color: white;
+  flex: 1 1 45%;
+  text-align: center;
+  padding: 30px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 280px;
+}
+
+.visit-btn {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+    .section img {
+      max-width: 120px;
+      margin-top: 15px;
+    }
+
+    .section h2 {
+      margin-bottom: 10px;
+    }
+
+    .apply-btn {
+      background-color: #e53935;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 15px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: #3a3a7c;
+      color: white;
+      padding: 30px 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+
+    footer .column {
+      flex: 1 1 300px;
+      margin: 10px;
+    }
+
+    img{
+        width: 50px;
+        height: 50px;
+        
+    }

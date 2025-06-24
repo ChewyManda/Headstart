@@ -1,0 +1,503 @@
+/* Apply these styles to all elements on the page */
+* {
+  margin: 0; /* Remove default outer spacing */
+  padding: 0; /* Remove default inner spacing */
+  box-sizing: border-box; /* Include padding and border in element’s total size */
+}
+
+/* Set up the body (main background and layout) */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Set a clean and readable font */
+  display: flex; /* Enable flexible layout */
+  flex-direction: column; /* Stack content vertically */
+  min-height: 100vh; /* Ensure body is at least full height of the screen */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Add diagonal gradient background */
+}
+
+/* Style the top navigation/header bar */
+header {
+  background: rgba(0, 0, 0, 0.8); /* Semi-transparent dark background */
+  backdrop-filter: blur(10px); /* Add background blur effect */
+  padding: 1rem 2rem; /* Add spacing inside the header */
+  display: flex; /* Arrange elements horizontally */
+  align-items: center; /* Vertically center items */
+  justify-content: space-between; /* Spread items to far left and right */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Add a subtle border line */
+}
+
+/* Style for logo image inside header */
+.logo img {
+  height: 40px; /* Set logo height */
+  filter: brightness(1.2); /* Slightly increase image brightness */
+}
+
+/* Main content area styling */
+main {
+  flex: 1; /* Take up remaining space */
+  padding: 2rem; /* Inner spacing */
+  animation: fadeIn 1s ease-in; /* Animate appearance */
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: flex-start; /* Align content to top */
+}
+
+/* Animation for fading in the content */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); } /* Start invisible and slightly below */
+  to { opacity: 1; transform: translateY(0); } /* End fully visible */
+}
+
+/* Container for the form */
+.application-container {
+  background: rgba(255, 255, 255, 0.95); /* Almost solid white background */
+  backdrop-filter: blur(20px); /* Subtle blur effect */
+  border-radius: 20px; /* Rounded corners */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px; /* Limit maximum width */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+}
+
+/* Make the main container responsive */
+.application-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem 1rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  width: 100%;
+}
+
+/* Form header section (title and subtitle) */
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.form-header h1 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2); /* Text gradient */
+  -webkit-text-fill-color: transparent;
+  
+}
+.form-header p {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Responsive form fields */
+.application-container input,
+.application-container select,
+.application-container textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+/* Horizontal step progress bar for multi-step form */
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+/* Light grey background line behind the stepper */
+.stepper::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: #e0e0e0;
+  z-index: 1;
+}
+
+/* Colored line indicating progress */
+.step-progress {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 2px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  z-index: 2;
+  transition: width 0.5s ease; /* Smooth animation when width changes */
+}
+
+/* Individual step styling */
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+}
+
+/* Circle with step number */
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  margin-bottom: 0.5rem;
+}
+
+/* Style for the current step */
+.step.active .step-number {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  transform: scale(1.1); /* Slightly bigger */
+}
+
+/* Style for completed steps */
+.step.completed .step-number {
+  background: #4caf50; /* Green background */
+  color: white;
+}
+
+/* Step title text */
+.step-title {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+.step.active .step-title {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Each form page (or step) is hidden by default */
+.form-step {
+  display: none;
+  animation: slideIn 0.5s ease;
+}
+.form-step.active {
+  display: block;
+}
+
+/* Slide animation for steps */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Basic spacing between form fields */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Row layout for grouping form fields */
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.form-col {
+  flex: 1;
+}
+
+/* Label styling */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Input, select, textarea appearance */
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Highlight form field on focus */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Set min height for textareas and allow resizing */
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Layout for radio buttons */
+.radio-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.radio-option input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+/* Layout for checkboxes */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+/* Navigation buttons (e.g. next, previous) */
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+/* General button styling */
+.btn {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Secondary button (usually 'Back') */
+.btn-secondary {
+  background: #f5f5f5;
+  color: #666;
+}
+.btn-secondary:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+/* Primary button (usually 'Next' or 'Submit') */
+.btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* Disabled button state */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Message shown when form is successfully submitted */
+.success-message {
+  text-align: center;
+  padding: 2rem;
+}
+.success-icon {
+  font-size: 4rem;
+  color: #4caf50;
+  margin-bottom: 1rem;
+}
+.success-message h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+.success-message p {
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+/* Highlight input border on error */
+.error {
+  border-color: #f44336 !important;
+}
+
+/* Error message text */
+.error-message {
+  color: #f44336;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Small loading spinner animation */
+.loading-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spin animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Footer styling */
+footer {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Contact info inside footer */
+.contact-info {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Social media links */
+.social-links a {
+  color: white;
+  margin: 0 0.5rem;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.social-links a:hover {
+  color: #667eea;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+  .application-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .form-row {
+    flex-direction: column; /* Stack form fields vertically */
+    gap: 0;
+  }
+
+  .stepper {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .step-title {
+    font-size: 0.8rem;
+  }
+
+  .form-navigation {
+    flex-direction: column; /* Stack buttons vertically */
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo img {
+    height: 35px;
+    margin-bottom: 0.5rem;
+  }
+
+  footer {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .application-container {
+    padding: 1rem 0.5rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .form-header h1 {
+    font-size: 1.3rem;
+  }
+  .form-navigation {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .stepper {
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive styles for tablets (iPad, etc.) */
+@media (max-width: 1024px) {
+  .application-container {
+    max-width: 95vw;
+    padding: 1.5rem 1rem;
+    margin: 1rem auto;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .form-header h1 {
+    font-size: 1.5rem;
+  }
+  .stepper {
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 1rem;
+  }
+  .form-navigation {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* Make stepper and progress bar responsive */
+.stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.step {
+  flex: 1 1 40px;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Responsive error messages */
+.error-message {
+  color: #e53e3e;
+  font-size: 0.95em;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  min-height: 1.2em;
+}
