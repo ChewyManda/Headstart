@@ -55,7 +55,7 @@ nav {
 
 /* ==========  Hero  ========== */
 .top {
-  background: url('school-bg.png') center/cover no-repeat;
+  background: url('Assets/school-bg.png') center/cover no-repeat;
   min-height: 100vh;
   position: relative;
   display: flex;
